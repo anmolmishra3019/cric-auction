@@ -1,99 +1,161 @@
-# 🏏 CricAuction AI — Live IPL Mega Auction Simulator & AI Intelligence Engine
+# CricAuction AI
 
-A full-stack, real-time cricket auction platform powered by Node.js, Socket.io, React 19, Tailwind CSS, and AI tactical evaluation engines.
+A full-stack **real-time cricket auction simulator** combining live bidding, automated franchise strategies, squad analysis, and 20-over match simulation.
 
----
+The project explores real-time state synchronization, server-authoritative events, rule-based decision systems, domain constraints, and simulation testing.
 
-## 🌟 Highlights & Features
+## Highlights
 
-### ⚡ 1. Real-Time Authoritative Auction Arena
-- **Live Bidding with Socket.io**: Server-authoritative timer with timestamp countdowns, hammer stages (Going Once, Going Twice, SOLD).
-- **Anti-Snipe Protection**: If a bid lands with $\le 3\text{s}$ remaining, the timer automatically extends to $5\text{s}$ (max 3 extensions per player).
-- **Pacing & Host Controls**: Pause/Resume, Fast-Forward to 1s, Custom Bidding Timers (10s, 15s, 20s, 30s), and "Not Interested (Instant Skip & Auto-Sim)".
-- **Rapid Unsold Re-Entry Round**: Second-chance auction round for unsold players at discounted valuations after main pool completion.
-- **Keyboard Shortcuts**: `Enter`/`Space` to Quick Bid, `+`/`-` to adjust increments, `P` to Pause, `F` to Fast-Forward, `S` to Skip.
+### Real-Time Auction
 
-### 🤖 2. Smart AI Franchise Bidders
-- **Authentic IPL Franchises**: CSK, MI, RCB, KKR, RR, SRH, DC, GT, LSG, PBKS.
-- **Budget-Conscious AI**: Dynamic purse reserve floors ($\approx ₹3\text{ Cr}$ per empty slot), marquee tier throttles, role saturation caps (max 2 WKs, max 6 pure batters/bowlers).
-- **Franchise Traits & Biases**: MI prioritizes 150kph pace & power hitters; CSK targets ice-cool all-rounders; KKR loves mystery spinners; RR targets emerging young talent.
-- **Human-Like Think Delays**: 300–1500ms think delays before counter-bidding.
+- Live bidding with **Socket.io**
+- Server-authoritative auction timer
+- Going Once / Going Twice / SOLD stages
+- Anti-snipe timer extension
+- Pause, resume, fast-forward, and configurable timers
+- Unsold-player re-entry round
+- Keyboard shortcuts for common auction actions
 
-### 📊 3. Deep 20-Over Match Simulation Engine
-- **Ball-by-ball Inning Simulation**: Dynamic strike rotation, realistic wicket dismissal logs (`b Bumrah`, `c Kohli b Rashid`), run rates, phase breakdown (Powerplay, Middle, Death Overs).
-- **Comprehensive Scorecards**: Runs, balls, 4s, 6s, strike rate, bowling economy, maidens, dot balls.
-- **Fantasy Impact Score & MVP**: Formula-based player impact points identifying the Player of the Match.
+### Automated Franchise Bidders
 
-### 🧠 4. AI Squad Intelligence & Playing XI Selector
-- **Tactical Breakdown**: Overall Squad Score (0–100), Batting Depth, Bowling Firepower, Death Overs rating.
-- **IPL Roasts & Praise Commentary**: Contextual squad roasts and tactical compliments.
-- **Best Playing XI**: Automatic Playing XI builder enforcing max 4 overseas players, 1 wicketkeeper, and 5 bowling options.
+Ten IPL franchise profiles use rule-based strategies with different priorities and constraints.
 
----
+The bidding engine considers:
 
-## 🧪 Automated Test Suite
+- Remaining purse
+- Empty squad slots
+- Player roles
+- Role saturation
+- Marquee tiers
+- Franchise-specific preferences
+- Minimum budget reserves
 
-Run all unit, invariant, and property tests via Vitest:
+### Match Simulation
+
+A 20-over ball-by-ball simulation engine models:
+
+- Strike rotation and run scoring
+- Wickets and dismissal logs
+- Powerplay, middle-over, and death-over phases
+- Batting and bowling scorecards
+- Run rate and bowling economy
+- Player impact scoring and MVP selection
+
+### Squad Intelligence
+
+The analysis engine provides:
+
+- Overall squad rating
+- Batting depth
+- Bowling strength
+- Death-over rating
+- Tactical commentary
+- Automated Playing XI selection
+- Overseas-player and role constraints
+
+## Tech Stack
+
+- **React 19** — frontend UI
+- **Tailwind CSS** — responsive styling
+- **Node.js** — backend runtime
+- **Socket.io** — real-time communication
+- **Zod** — server-side validation
+- **Vitest** — unit and simulation testing
+
+## Architecture
+
+```text
+React Client
+     │
+     │ Socket.io / REST
+     ▼
+Node.js Server
+     │
+     ├── Auction Room Manager
+     ├── Bid Validation
+     ├── Bot Strategy Engine
+     ├── Player Generator / Dataset
+     ├── Squad Analysis Engine
+     └── Match Simulation Engine
+     │
+     ▼
+Vitest Test Suites
+```
+
+### Key Modules
+
+```text
+server/
+├── server.js              # REST, Socket.io and server lifecycle
+├── auctionRoomManager.js  # Room lifecycle and reconnection handling
+├── botStrategy.js         # Automated bidding decisions
+├── validators.js          # Zod input/event validation
+├── playerGenerator.js     # Player pool generation
+├── realPlayersData.js     # Player dataset
+├── aiAnalysisEngine.js    # Squad analysis and Playing XI selection
+└── matchSimulator.js      # 20-over match simulation
+
+client/
+└── src/
+    ├── components/
+    ├── hooks/
+    ├── services/
+    └── App.jsx
+
+tests/
+└── *.test.js
+```
+
+## Testing
+
+Run the complete suite with:
 
 ```bash
 npm test
 ```
 
-### Test Coverage:
-- `tests/matchSimulator.test.js`: 200+ simulated matches verifying run sums, overs ($\le 20$), bowler quotas ($\le 4\text{ ov}$), and dismissal authenticity.
-- `tests/botBidding.test.js`: 100 full 5-bot simulated auctions verifying purse limits, squad constraints, and minimum squad safety reserves.
-- `tests/aiAnalysisEngine.test.js`: 4 overseas limit enforcement, 1 WK guarantee, 5 bowling options, and 0–100 rating bounds.
+Tests cover auction constraints, purse limits, squad rules, match invariants, over limits, and analysis constraints.
 
----
+## Getting Started
 
-## 🚀 Quickstart & Development
+### Install
 
-### 1. Install Dependencies
 ```bash
 npm install
 cd client && npm install && cd ..
 ```
 
-### 2. Run Local Development Server
+### Development
+
 ```bash
 npm run dev
 ```
+
+Typical local endpoints:
+
 - Server: `http://localhost:5000`
 - Client: `http://localhost:5173`
 
-### 3. Build & Run for Production
+### Production Build
+
 ```bash
 cd client && npm run build && cd ..
 npm start
 ```
 
----
+## Engineering Focus
 
-## 📂 Project Architecture
+This project demonstrates practical work with:
 
-```
-cric-auction-ai/
-├── server/
-│   ├── server.js              # REST endpoints, Helmet, CORS, Socket.io & Authoritative Heartbeat
-│   ├── auctionRoomManager.js  # In-memory room manager, lifecycle, reconnection & GC
-│   ├── botStrategy.js         # Pure bot decision algorithms & franchise biases
-│   ├── validators.js          # Zod validation schemas for all inputs & events
-│   ├── playerGenerator.js     # Procedural infinite player generator (130+ pool)
-│   ├── realPlayersData.js     # Real IPL cricketer dataset with stats (as of 2026)
-│   ├── aiAnalysisEngine.js    # Squad rating engine & Playing XI selector
-│   └── matchSimulator.js      # 20-over match engine with fall of wickets & MVP calculation
-├── client/
-│   ├── src/
-│   │   ├── components/        # Navbar, HomeLobby, AuctionArena, SquadTracker, Modals
-│   │   ├── hooks/             # useAuctionRoom custom React hook
-│   │   ├── services/          # socket.js & soundEffects.js (Web Audio synthesizer)
-│   │   └── App.jsx            # Coordinator view
-├── tests/                     # Vitest unit & property test suites
-├── DEPLOYMENT.md              # Deployment guide for Render / Railway / Fly.io
-└── package.json
-```
+- Real-time client/server synchronization
+- Server-authoritative state transitions
+- Rule-based automated decision making
+- Complex domain constraints
+- Deterministic and invariant-oriented testing
+- React component architecture
+- Input validation at the server boundary
 
----
+## Author
 
-## 📜 Disclaimer
-*Player statistics, traits, and ratings are curated reflecting recent IPL and international career records as of 2026.*
+**Anmol Mishra**  
+B.Tech ECE | Full-Stack Development | React | Node.js | JavaScript
